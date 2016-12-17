@@ -13,7 +13,7 @@ Gerador e gerenciador de HTML para projetos web em PHP.
 ## Instalação
 
 ```
-Composer require 3rasil/html
+Composer require devbr/html
 ```
 
 ## Uso
