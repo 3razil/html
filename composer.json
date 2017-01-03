@@ -1,7 +1,7 @@
 {
     "name": "devbr/html",
     "description": "Html Template Engine",
-    "keywords": ["html", "template","xtag"],
+    "keywords": ["html", "template","neostag"],
     "license": "MIT",
     "type": "library",
     "homepage": "http://paulorocha.tk/devbr/",
@@ -18,9 +18,7 @@
     "require": {
         "php": ">=7.0.0"
     },
-    "require-dev": {
-    },
     "autoload": {
-        "psr-0": {"Lib": "/"}
+        "psr-4": {"Lib\\": ""}
     }
 }

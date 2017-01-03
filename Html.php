@@ -1,19 +1,28 @@
 <?php
 /**
- * Doc Factory for HTML
- * @copyright   Bill Rocha - http://plus.google.com/+BillRocha
- * @license     MIT & GLP2
- * @author      Bill Rocha - prbr@ymail.com
- * @version     0.0.1
- * @package     Lib
- * @access      public
- * @since       0.0.4
+ * Lib\Html
+ * PHP version 7
  *
- * ©NeosTag é marca registrada da NeosOrg e todos os direitos são reservados.
+ * @category  Html
+ * @package   Library
+ * @author    Bill Rocha <prbr@ymail.com>
+ * @copyright 2016 Bill Rocha <http://google.com/+BillRocha>
+ * @license   <https://opensource.org/licenses/MIT> MIT
+ * @version   GIT: 0.0.2
+ * @link      http://paulorocha.tk/github/devbr
  */
 
 namespace Lib;
 
+/**
+ * Lib\Html Class
+ *
+ * @category Html
+ * @package  Library
+ * @author   Bill Rocha <prbr@ymail.com>
+ * @license  <https://opensource.org/licenses/MIT> MIT
+ * @link     http://paulorocha.tk/github/devbr
+ */
 class Html
 {
 
@@ -26,7 +35,7 @@ class Html
     private $pathWww =          null;
     private $pathStyle =        null;
     private $pathScript =       null;
-    private $url =              null; 
+    private $url =              null;
 
     //Html parts
     private $header =           null;
@@ -54,118 +63,149 @@ class Html
      */
     function __construct(
         $config = null,
-        $name = null, 
+        $name = null,
         $cached = null,
-        $mode = null)
-    {
-        if(is_array($config)){
-            foreach($config as $k=>$v){
+        $mode = null
+    ) {
+    
+        if (is_array($config)) {
+            foreach ($config as $k => $v) {
                 $this->{$k} = $v;
             }
-        } elseif(method_exists('Config\Html', 'getParams')) {
-            foreach((new \Config\Html)->getParams() as $k=>$v){
+        } elseif (method_exists('Config\Html', 'getParams')) {
+            foreach ((new \Config\Html)->getParams() as $k => $v) {
                 $this->{$k} = $v;
             }
         }
 
-        if($this->pathHtml === null) 
+        if ($this->pathHtml === null) {
             $this->pathHtml = defined('_HTML') ? _HTML : dirname(__DIR__).'/';
+        }
 
-        if($this->pathWww === null)
+        if ($this->pathWww === null) {
             $this->pathWww  = defined('_WWW')  ? _WWW  : dirname(__DIR__).'/';
+        }
 
-        if($this->url === null)
+        if ($this->url === null) {
             $this->url =      defined('_URL')  ? _URL  : './';
+        }
 
         //Acertando o final com barras
         $this->url = rtrim($this->url, ' /').'/';
         $this->pathHtml = rtrim($this->pathHtml, ' /').'/';
         $this->pathWww = rtrim($this->pathWww, ' /').'/';
 
-        if($this->pathHtmlCache === null)
+        if ($this->pathHtmlCache === null) {
             $this->pathHtmlCache = $this->pathHtml.'cache/';
+        }
 
-        if($this->pathStyle === null)
+        if ($this->pathStyle === null) {
             $this->pathStyle = $this->pathWww.'css/';
+        }
 
-        if($this->pathScript === null)
+        if ($this->pathScript === null) {
             $this->pathScript = $this->pathWww.'js/';
+        }
 
-        if($this->header === null)
+        if ($this->header === null) {
             $this->header = $this->pathHtml.'header.html';
+        }
 
-        if($this->footer === null)
+        if ($this->footer === null) {
             $this->footer = $this->pathHtml.'footer.html';
+        }
 
-        if($name !== null)   $this->name =   $name;
-        if($cached !== null) $this->cached = $cached;
-        if($mode !== null)   $this->mode =   $mode;
+        if ($name !== null) {
+            $this->name =   $name;
+        }
+        if ($cached !== null) {
+            $this->cached = $cached;
+        }
+        if ($mode !== null) {
+            $this->mode =   $mode;
+        }
 
-        //Acertando o final com barras        
+        //Acertando o final com barras
         $this->pathHtmlCache = rtrim($this->pathHtmlCache, ' /').'/';
-        $this->pathScript = rtrim($this->pathScript, ' /').'/'; 
+        $this->pathScript = rtrim($this->pathScript, ' /').'/';
         $this->pathStyle = rtrim($this->pathStyle, ' /').'/';
     }
 
     //Html template processor: Blade
-    function setBlade(bool $blade = true){
+    function setBlade(bool $blade = true)
+    {
         $this->blade = $blade;
         return $this;
     }
 
     //Html template processor: NeosTag
-    function setNtag(bool $ntag = true){
+    function setNtag(bool $ntag = true)
+    {
         $this->nTag = $ntag;
         return $this;
     }
 
-    function setPathHtml(string $val){
+    function setPathHtml(string $val)
+    {
         $this->pathHtml = $val;
         return $this;
     }
 
-    function setPathWww(string $val){
+    function setPathWww(string $val)
+    {
         $this->pathWww = $val;
         return $this;
     }
 
-    function setPathScript(string $val){
+    function setPathScript(string $val)
+    {
         $this->pathScript = $val;
         return $this;
     }
 
-    function setPathStyle(string $val){
+    function setPathStyle(string $val)
+    {
         $this->pathStyle = $val;
         return $this;
     }
 
-    function setPathCache(string $val){
+    function setPathCache(string $val)
+    {
         $this->pathHtmlCache = $val;
         return $this;
     }
 
-    function setUrl(string $val){
+    function setUrl(string $val)
+    {
         $this->url = $val;
         return $this;
     }
 
     function body($v = null)
-    { 
-        if($v === null) return $this->body;
-        $v = $v.'.html';        
-        if(!file_exists($v)) $v = $this->pathHtml.$v;        
+    {
+        if ($v === null) {
+            return $this->body;
+        }
+        $v = $v.'.html';
+        if (!file_exists($v)) {
+            $v = $this->pathHtml.$v;
+        }
         $this->body[] = $v;
         return $this;
     }
 
     function header($v = null)
     {
-        if($v === null) return $this->header;
-        if($v === false) {
+        if ($v === null) {
+            return $this->header;
+        }
+        if ($v === false) {
             $this->header = null;
         } else {
-            $v = $v.'.html';        
-            if(!file_exists($v)) $v = $this->pathHtml.$v;        
+            $v = $v.'.html';
+            if (!file_exists($v)) {
+                $v = $this->pathHtml.$v;
+            }
             $this->header = $v;
         }
         return $this;
@@ -173,12 +213,16 @@ class Html
 
     function footer($v = null)
     {
-        if($v === null) return $this->footer;
-        if($v === false) {
+        if ($v === null) {
+            return $this->footer;
+        }
+        if ($v === false) {
             $this->footer = null;
         } else {
-            $v = $v.'.html';        
-            if(!file_exists($v)) $v = $this->pathHtml.$v;        
+            $v = $v.'.html';
+            if (!file_exists($v)) {
+                $v = $this->pathHtml.$v;
+            }
             $this->footer = $v;
         }
         return $this;
@@ -199,39 +243,48 @@ class Html
 
     function render($html = null, $val = null)
     {
-        if($html !== null){ 
+        if ($html !== null) {
             $this->body($html);
             $this->header(false);
             $this->footer(false);
         }
-        if($val !== null){
+        if ($val !== null) {
             $this->val($val);
         }
 
 
-        if($this->cached &&
-            file_exists($this->pathHtmlCache.$this->name.'_cache.html'))
+        if ($this->cached &&
+            file_exists($this->pathHtmlCache.$this->name.'_cache.html')) {
                 return $this;
+        }
 
         $this->content = file_exists($this->header) ? file_get_contents($this->header) : '';
 
-        foreach($this->body as $b){
+        foreach ($this->body as $b) {
             @$this->content .= file_get_contents($b);
         }
         $this->content .= file_exists($this->footer) ? file_get_contents($this->footer) : '';
 
-        if($this->mode == 'dev') $this->assets();
-        if($this->mode == 'pro') {
+        if ($this->mode == 'dev') {
+            $this->assets();
+        }
+        if ($this->mode == 'pro') {
             $this->assetsComp();
             $this->setContent(str_replace(["\r","\n","\t",'  '], '', $this->getContent()));
         }
 
         //Html template processors
-        if($this->blade) $this->blade();
-        if($this->nTag) $this->produceNTag();
+        if ($this->blade) {
+            $this->blade();
+        }
+        if ($this->nTag) {
+            $this->produceNTag();
+        }
 
         //Insert cache data
-        if($this->cached) file_put_contents($this->pathHtmlCache.$this->name.'_cache.html', $this->getContent());
+        if ($this->cached) {
+            file_put_contents($this->pathHtmlCache.$this->name.'_cache.html', $this->getContent());
+        }
 
         return $this;
     }
@@ -240,7 +293,9 @@ class Html
     */
     function insertStyles($list)
     {
-        if(!is_array($list)) $list = [$list];
+        if (!is_array($list)) {
+            $list = [$list];
+        }
         $this->styles = $list;
         return $this;
     }
@@ -249,7 +304,9 @@ class Html
     */
     function insertScripts($list)
     {
-        if(!is_array($list)) $list = [$list];
+        if (!is_array($list)) {
+            $list = [$list];
+        }
         $this->scripts = $list;
         return $this;
     }
@@ -266,9 +323,9 @@ class Html
     private function assetsComp()
     {
         //CSS STYLES
-        if(file_exists($this->pathStyle.$this->name.'_all.css') && !$this->forceCompress)
+        if (file_exists($this->pathStyle.$this->name.'_all.css') && !$this->forceCompress) {
             $content = file_get_contents($this->pathStyle.$this->name.'_all.css');
-        else {
+        } else {
             $content = '';
             foreach ($this->styles as $file) {
                 $content .= exec('java -jar '.__DIR__.'/min/yc.jar "'.$this->pathStyle.$file.'.css"');
@@ -280,9 +337,9 @@ class Html
         $this->val('style', '<style id="stylesheet_base">'.$content.'</style>');
 
         //JAVASCRIPTS
-        if(file_exists($this->pathScript.$this->name.'_all.js') && !$this->forceCompress)
+        if (file_exists($this->pathScript.$this->name.'_all.js') && !$this->forceCompress) {
             $content = file_get_contents($this->pathScript.$this->name.'_all.js');
-        else {
+        } else {
             $content = ';';
             foreach ($this->scripts as $file) {
                 $content .= exec('java -jar '.__DIR__.'/min/yc.jar "'.$this->pathScript.$file.'.js"');
@@ -293,7 +350,7 @@ class Html
         }
         
         $s = '<script id="javascript_base">var URL=\''.$this->url.'\'';
-        foreach ($this->jsvalues as $n=>$v) {
+        foreach ($this->jsvalues as $n => $v) {
             $s .= ','.$n.'='.(is_string($v) ? '\''.str_replace("'", '"', $v).'\'' : $v);
         }
         $s .= ';';
@@ -310,19 +367,19 @@ class Html
     private function assets()
     {
         $s = '';
-        foreach($this->styles as $id=>$f){
+        foreach ($this->styles as $id => $f) {
             $s .= '<link id="stylesheet_'.$id.'" rel="stylesheet" href="'.$this->url.'css/'.$f.'.css">'."\n\t";
         }
         $this->val('style', $s);
 
         $s = '<script id="javascript_base">var URL=\''.$this->url.'\'';
 
-        foreach ($this->jsvalues as $n=>$v) {
+        foreach ($this->jsvalues as $n => $v) {
             $s .= ','.$n.'='.(is_string($v) ? '\''.str_replace("'", '"', $v).'\'' : $v);
         }
         $s .= ';</script>';
         
-        foreach($this->scripts as $id=>$f){
+        foreach ($this->scripts as $id => $f) {
             $s .= "\n\t".'<script id="javascript_'.$id.'" src="'.$this->url.'js/'.$f.'.js"></script>';
         }
         $this->val('script', $s); //e($this);
@@ -332,9 +389,9 @@ class Html
      * Send headers & Output tris content
      *
      */
-    function send() 
+    function send()
     {
-        if($this->mode == 'pro'){ 
+        if ($this->mode == 'pro') {
             ob_end_clean();
             ob_start('ob_gzhandler');
         }
@@ -343,10 +400,12 @@ class Html
         header('X-Server: Qzumba/0.1.8.beta');//for safety ...
         header('X-Powered-By: NEOS PHP FRAMEWORK/1.3.0');//for safety ...
 
-        if($this->cached &&
-            file_exists($this->pathHtmlCache.$this->name.'_cache.html'))
+        if ($this->cached &&
+            file_exists($this->pathHtmlCache.$this->name.'_cache.html')) {
                 return $this->sendWithCach();
-        else exit(eval('?>'.$this->content));
+        } else {
+            exit(eval('?>'.$this->content));
+        }
     }
 
     /* Send cached version of compilation
@@ -354,7 +413,7 @@ class Html
      */
     function sendCache()
     {
-        if(!file_exists($this->pathHtmlCache.$this->name.'_cache.html')) {
+        if (!file_exists($this->pathHtmlCache.$this->name.'_cache.html')) {
             $this->cached = true;
             return $this;
         }
@@ -369,26 +428,28 @@ class Html
     protected function sendWithCach()
     {
         $cache = $this->pathHtmlCache.$this->name.'_cache.html';
-        if(!file_exists($cache)) file_put_contents($cache, $this->content);
+        if (!file_exists($cache)) {
+            file_put_contents($cache, $this->content);
+        }
         include $cache;
         exit();
     }
 
     //Insere o conteúdo processado Html
-    protected function setContent($content) 
+    protected function setContent($content)
     {
         $this->content = $content;
         return $this;
     }
 
     //Pega o conteúdo processado Html
-    protected function getContent() 
+    protected function getContent()
     {
         return $this->content;
     }
 
     //Pega uma variável ou todas
-    protected function getVar($var = null) 
+    protected function getVar($var = null)
     {
         //return ($var == null) ? $this->values : (isset($this->values[$var]) ? $this->values[$var] : false);
         $var = trim($var);
@@ -407,19 +468,30 @@ class Html
     }
 
     //Registra uma variável para o Layout
-    function value($name, $value = null){ return $this->val($name, $value = null);}
-    function val($name, $value = null) 
+    function value($name, $value = null)
     {
-        if(is_string($name)) static::$values[$name] = $value;
-        if(is_array($name)) static::$values = array_merge(static::$values, $name);
+        return $this->val($name, $value = null);
+    }
+    function val($name, $value = null)
+    {
+        if (is_string($name)) {
+            static::$values[$name] = $value;
+        }
+        if (is_array($name)) {
+            static::$values = array_merge(static::$values, $name);
+        }
         return $this;
     }
 
     //Registra uma variável para o Javascript
-    function jsvar($name, $value = null) 
+    function jsvar($name, $value = null)
     {
-        if(is_string($name)) $this->jsvalues[$name] = $value;
-        if(is_array($name)) $this->jsvalues = array_merge($this->jsvalues, $name);
+        if (is_string($name)) {
+            $this->jsvalues[$name] = $value;
+        }
+        if (is_array($name)) {
+            $this->jsvalues = array_merge($this->jsvalues, $name);
+        }
         return $this;
     }
 
@@ -429,18 +501,21 @@ class Html
      * @return void
     */
     private function produceNTag()
-    {        
+    {
         $ponteiro = -1;
         $content = $this->getContent();
 
         //Loop de varredura para o arquivo HTML
-        while($ret = $this->sTag($content, $ponteiro)){
+        while ($ret = $this->sTag($content, $ponteiro)) {
             $ponteiro = 0 + $ret['-final-'];
             $vartemp = '';
 
             //constant URL
-            if($ret['-tipo-'] == 'var' && $ret['var'] == 'url') $vartemp = $this->url;
-            elseif (method_exists($this, '_' . $ret['-tipo-'])) $vartemp = $this->{'_' . $ret['-tipo-']}($ret);
+            if ($ret['-tipo-'] == 'var' && $ret['var'] == 'url') {
+                $vartemp = $this->url;
+            } elseif (method_exists($this, '_' . $ret['-tipo-'])) {
+                $vartemp = $this->{'_' . $ret['-tipo-']}($ret);
+            }
 
             //Incluindo o bloco gerado pelas ©NeosTags
             $content = substr_replace($this->getContent(), $vartemp, $ret['-inicio-'], $ret['-tamanho-']);
@@ -448,7 +523,7 @@ class Html
 
             //RE-setando o ponteiro depois de adicionar os dados acima
             $ponteiro = $ret['-inicio-'];
-        }//end while        
+        }//end while
 
         //returns the processed contents
         return $this->getContent();
@@ -465,13 +540,17 @@ class Html
     */
     private function sTag(&$arquivo, $ponteiro = -1, $tag = null)
     {
-        if($tag == null) $tag = $this->tag;
+        if ($tag == null) {
+            $tag = $this->tag;
+        }
         $inicio = strpos($arquivo, '<'.$tag, $ponteiro + 1);
-        if($inicio !== false){
+        if ($inicio !== false) {
             //get the type (<s:tipo ... )
             $x = substr($arquivo, $inicio, 25);
             preg_match('/(?<tag>\w+):(?<type>\w+|[\:]\w+)/', $x, $m);
-            if(!isset($m[0])) return false;
+            if (!isset($m[0])) {
+                return false;
+            }
 
             $ntag = $m[0];
             //the final ...
@@ -480,25 +559,31 @@ class Html
             $fn = strpos($arquivo, '>', $inicio);
 
             //not  /> or </s:xxx>  = error
-            if($fnTag === false && $ftag === false) return false;
+            if ($fnTag === false && $ftag === false) {
+                return false;
+            }
 
-            if($ftag !== false ) {
-                if($fn !== false && $fn < $ftag){
+            if ($ftag !== false) {
+                if ($fn !== false && $fn < $ftag) {
                     $a['-content-'] = substr($arquivo, $fn+1, ($ftag - $fn)-1);
                     $finTag = $fn;
                     $a['-final-'] = $ftag + strlen('</'.$ntag.'>');
-                } else return false;
-            } elseif($fnTag !== false) {
+                } else {
+                    return false;
+                }
+            } elseif ($fnTag !== false) {
                 $a['-content-'] = '';
                 $finTag = $fnTag;
                 $a['-final-'] = $fnTag + 2;
-            } else return false;
+            } else {
+                return false;
+            }
 
             //catching attributes
             preg_match_all('/(?<att>\w+)="(?<val>.*?)"/', substr($arquivo, $inicio, $finTag - $inicio), $atb);
 
-            if(isset($atb['att'])){
-                foreach ($atb['att'] as $k=>$v){
+            if (isset($atb['att'])) {
+                foreach ($atb['att'] as $k => $v) {
                     $a[$v] = $atb['val'][$k];
                 }
             }
@@ -508,8 +593,11 @@ class Html
             $a['-tamanho-'] = ($a['-final-'] - $inicio);
             $a['-tipo-'] = 'var';
 
-            if(strpos($m['type'], ':') !== false) $a['-tipo-'] = str_replace (':', '', $m['type']);
-            else $a['var'] = $m['type'];
+            if (strpos($m['type'], ':') !== false) {
+                $a['-tipo-'] = str_replace (':', '', $m['type']);
+            } else {
+                $a['var'] = $m['type'];
+            }
 
             return $a;
         }
@@ -523,39 +611,47 @@ class Html
      * @return void         O mesmo conteudo com variáveis BLADE substituídas
     */
     private function blade()
-    {       
+    {
         $arquivo = $this->getContent();
         $t = strlen($arquivo) - 1;
         $ini = '';
         $o = '';
 
-        for($i =0; $i <= $t; $i++){
-
-            if($ini != '' && $ini < $i){
-                if($arquivo[$i] == '@' && ($i - $ini) < 2) {
+        for ($i =0; $i <= $t; $i++) {
+            if ($ini != '' && $ini < $i) {
+                if ($arquivo[$i] == '@' && ($i - $ini) < 2) {
                     $o .= '@';
                     $ini = '';
                     continue;
                 }
-                if(!preg_match("/[a-zA-Z0-9\.:\[\]\-_()\/'$+,\\\]/",$arquivo[$i])){
+                if (!preg_match("/[a-zA-Z0-9\.:\[\]\-_()\/'$+,\\\]/", $arquivo[$i])) {
                     $out1 = substr($arquivo, $ini+1, $i-$ini-1);
                     $out = rtrim($out1, ',.:');
                     $i += (strlen($out) - strlen($out1));
 
-                    if($this->getVar($out)) $out = $this->getVar($out);
-                    else {
+                    if ($this->getVar($out)) {
+                        $out = $this->getVar($out);
+                    } else {
                         restore_error_handler();
                         ob_start();
                         $ret = eval('return '.$out.';');
-                        if(ob_get_clean() === '') $out = $ret;
-                        else $out = '';
+                        if (ob_get_clean() === '') {
+                            $out = $ret;
+                        } else {
+                            $out = '';
+                        }
                     }
                     $o .= $out; //exit($o);
                     $ini = '';
-                    if($arquivo[$i] != ' ') $i --;//retirando espaço em branco...
+                    if ($arquivo[$i] != ' ') {
+                        $i --;//retirando espaço em branco...
+                    }
                 }
-            } elseif($ini == '' && $arquivo[$i] == '@') $ini = $i;
-            else $o .= $arquivo[$i];
+            } elseif ($ini == '' && $arquivo[$i] == '@') {
+                $ini = $i;
+            } else {
+                $o .= $arquivo[$i];
+            }
         }//end FOR
         return $this->setContent($o);
     }
@@ -568,15 +664,19 @@ class Html
      * @param array $ret ©NeosTag data array
      * @return string   Renderized Html
     */
-    private function _var($ret) 
+    private function _var($ret)
     {
         $v = $this->getVar($ret['var']);
-        if(!$v) return '';
+        if (!$v) {
+            return '';
+        }
         //$ret['-content-'] .= $v;
         $ret['-content-'] .= '<?php echo Lib\Html::get("'.trim($ret['var']).'")?>';
 
         //List type
-        if(is_array($v)) return $this->_list($ret);
+        if (is_array($v)) {
+            return $this->_list($ret);
+        }
 
         return $this->setAttributes($ret);
     }
@@ -590,21 +690,25 @@ class Html
     */
     private function _list($ret)
     {
-        if(!isset($ret['var'])) return '';
+        if (!isset($ret['var'])) {
+            return '';
+        }
         $v = $this->getVar($ret['var']);
-        if(!$v || !is_array($v)) return '';
+        if (!$v || !is_array($v)) {
+            return '';
+        }
 
         $tag = isset($ret['tag']) ? $ret['tag'] : 'li';
         $ret = $this->clearData($ret);
 
         //Tag UL and params. (class, id, etc)
         $o = '<ul';
-        foreach($ret as $k=>$val){
+        foreach ($ret as $k => $val) {
             $o .= ' '.trim($k).'="'.trim($val).'"';
         }
         $o .= '>';
         //create list
-        foreach ($v as $k=>$val){
+        foreach ($v as $k => $val) {
             $o .= '<'.$tag.'>'.$val.'</'.$tag.'>';
         }
         return $o . '</ul>';
@@ -619,9 +723,13 @@ class Html
     */
     private function _block($ret)
     {
-        if(!isset($ret['name'])) return '';
+        if (!isset($ret['name'])) {
+            return '';
+        }
         $ret['-content-'] .= $this->getBlock(trim($ret['name']));
-        if($ret['-content-'] == false) return '';
+        if ($ret['-content-'] == false) {
+            return '';
+        }
 
         unset($ret['name']);
         return $this->setAttributes($ret);
@@ -633,8 +741,8 @@ class Html
      *       $select['data'] = ['value'=>'display', 'val....];
      *       $select['default'] = '..value...';
      *       $LibDocHtml->val('varName',$select);
-     *   
-     *       ---- in HTML file 
+     *
+     *       ---- in HTML file
      *       <x::select data="varName" ...some attributes />
      *
      * @param array $ret ©NeosTag data array
@@ -643,10 +751,12 @@ class Html
     private function _select($ret)
     {
         $var = $this->getVar($ret['data']);
-        if(!$var) return false;
+        if (!$var) {
+            return false;
+        }
 
         $o = '';
-        foreach($var['data'] as $k => $v) {
+        foreach ($var['data'] as $k => $v) {
             $o .= '<option value="'.$k.'"'.($var['default'] == $k ? ' selected':'').'>'.$v.'</option>';
         }
         $ret['-content-'] = $o;
@@ -662,19 +772,26 @@ class Html
         $a = $this->clearData($a);
 
         //Var span (with class, id, etc);
-        if(count($a) > 0) {
-            if($tag == '') $tag= 'span';
+        if (count($a) > 0) {
+            if ($tag == '') {
+                $tag= 'span';
+            }
             $d = '<'.$tag;
-            foreach ($a as $k=>$v){
+            foreach ($a as $k => $v) {
                 $d .= ' '.trim($k).'="'.trim($v).'"';
             }
 
-            if($tag == 'input') $content = $d.' value="'.$content.'"/>';
-            else $content = $d.'>'.$content.'</'.$tag.'>';
-
-        } elseif($tag != '') {
-            if($tag == 'input') $content = '<'.$tag.' value="'.$content.'"/>';
-            else $content = '<'.$tag.'>'.$content.'</'.$tag.'>';
+            if ($tag == 'input') {
+                $content = $d.' value="'.$content.'"/>';
+            } else {
+                $content = $d.'>'.$content.'</'.$tag.'>';
+            }
+        } elseif ($tag != '') {
+            if ($tag == 'input') {
+                $content = '<'.$tag.' value="'.$content.'"/>';
+            } else {
+                $content = '<'.$tag.'>'.$content.'</'.$tag.'>';
+            }
         }
         return $content;
     }
@@ -688,15 +805,14 @@ class Html
     */
     function clearData($ret)
     {
-        unset($ret['var'], 
-              $ret['-inicio-'], 
-              $ret['-tamanho-'], 
-              $ret['-final-'], 
-              $ret['-tipo-'], 
-              $ret['-content-'], 
+        unset($ret['var'],
+              $ret['-inicio-'],
+              $ret['-tamanho-'],
+              $ret['-final-'],
+              $ret['-tipo-'],
+              $ret['-content-'],
               $ret['tag'],
               $ret['data']);
         return $ret;
     }
-
 }
