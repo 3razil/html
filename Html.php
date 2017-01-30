@@ -132,20 +132,20 @@ class Html
     }
 
     //Html template processor: Blade
-    function setBlade(bool $blade = true)
+    function setBlade(bool $blade = null)
     {
         $this->blade = $blade;
         return $this;
     }
 
     //Html template processor: NeosTag
-    function setNtag(bool $ntag = true)
+    function setNtag(bool $ntag = null)
     {
         $this->nTag = $ntag;
         return $this;
     }
 
-    function setPathHtml(string $val)
+    function setPathHtml($val)
     {
         $this->pathHtml = $val;
         return $this;
@@ -178,6 +178,12 @@ class Html
     function setUrl(string $val)
     {
         $this->url = $val;
+        return $this;
+    }
+
+    function setName($name)
+    {
+        $this->name = $name;
         return $this;
     }
 
@@ -235,7 +241,7 @@ class Html
         return $this;
     }
 
-    function cached(bool $b = true)
+    function cached(bool $b = null)
     {
         $this->cached = $b;
         return $this;
