@@ -355,7 +355,7 @@ class Html
             file_put_contents($this->pathScript.$this->name.'_all.js', $content);
         }
         
-        $s = '<script id="javascript_base">var _URL=new URL(\''.$this->url.'\')';
+        $s = '<script id="javascript_base">var _URL=\''.$this->url.'\'';
         foreach ($this->jsvalues as $n => $v) {
             $s .= ','.$n.'='.(is_string($v) ? '\''.str_replace("'", '"', $v).'\'' : $v);
         }
@@ -378,7 +378,7 @@ class Html
         }
         $this->val('style', $s);
 
-        $s = '<script id="javascript_base">var _URL=new URL(\''.$this->url.'\')';
+        $s = '<script id="javascript_base">var _URL=\''.$this->url.'\'';
 
         foreach ($this->jsvalues as $n => $v) {
             $s .= ','.$n.'='.(is_string($v) ? '\''.str_replace("'", '"', $v).'\'' : $v);
