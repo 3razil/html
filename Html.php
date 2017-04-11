@@ -28,7 +28,7 @@ class Html
 
     private $name =             '';
     private $cached =           false;
-    private $mode =             'pro'; //pro|dev
+    private $mode =             'dev'; //pro|dev
 
     private $pathHtml =         null;
     private $pathHtmlCache =    null;
@@ -72,8 +72,8 @@ class Html
             foreach ($config as $k => $v) {
                 $this->{$k} = $v;
             }
-        } elseif (method_exists('Config\Html', 'getParams')) {
-            foreach ((new \Config\Html)->getParams() as $k => $v) {
+        } elseif (method_exists('Config\Lib\Html', 'getParams')) {
+            foreach ((new \Config\Lib\Html)->getParams() as $k => $v) {
                 $this->{$k} = $v;
             }
         }
@@ -328,41 +328,31 @@ class Html
 
     private function assetsComp()
     {
-        ini_set('max_execution_time', '200');
-
-        $java = 'java -jar '.__DIR__.'/min/yc.jar ';
-        $allcss = strtolower($this->pathStyle.$this->name).'_all.css';
-        $alljs = strtolower($this->pathScript.$this->name).'_all.js';
-
         //CSS STYLES
-        if (file_exists($allcss) && !$this->forceCompress) {
-            $content = file_get_contents($allcss);
+        if (file_exists($this->pathStyle.$this->name.'_all.css') && !$this->forceCompress) {
+            $content = file_get_contents($this->pathStyle.$this->name.'_all.css');
         } else {
             $content = '';
             foreach ($this->styles as $file) {
-                $temp = exec($java.'"'.$this->pathStyle.$file.'.css"');
-                //echo "\n\n<br><br>".$file.' == '.substr($temp, 0, 10);
-                $content .= $temp;
+                $content .= exec('java -jar '.__DIR__.'/min/yc.jar "'.$this->pathStyle.$file.'.css"');
             }
-            file_put_contents($allcss, $content);
-            //$content = exec($java.$allcss.'"');
-            //file_put_contents($allcss, $content);
+            file_put_contents($this->pathStyle.$this->name.'_all.css', $content);
+            $content = exec('java -jar '.__DIR__.'/min/yc.jar "'.$this->pathStyle.$this->name.'_all.css"');
+            file_put_contents($this->pathStyle.$this->name.'_all.css', $content);
         }
-        $this->val('style', '<link id="stylesheet_base" rel="stylesheet" href="'.strtolower($this->url.'css/'.$this->name).'_all.css">'); //>'.$content.'</style>');
+        $this->val('style', '<style id="stylesheet_base">'.$content.'</style>');
 
         //JAVASCRIPTS
-        if (file_exists($alljs) && !$this->forceCompress) {
-            $content = file_get_contents($alljs);
+        if (file_exists($this->pathScript.$this->name.'_all.js') && !$this->forceCompress) {
+            $content = file_get_contents($this->pathScript.$this->name.'_all.js');
         } else {
             $content = ';';
             foreach ($this->scripts as $file) {
-                $temp = exec($java.'"'.$this->pathScript.$file.'.js"');
-                //echo "\n\n<br><br>".$file.' == '.substr($temp, 0, 10);
-                $content .= $temp;
+                $content .= exec('java -jar '.__DIR__.'/min/yc.jar "'.$this->pathScript.$file.'.js"');
             }
-            file_put_contents($alljs, $content);
-            //$content = exec($java.'"'.$alljs.'"');
-            //file_put_contents($alljs, $content);
+            file_put_contents($this->pathScript.$this->name.'_all.js', $content);
+            $content = exec('java -jar '.__DIR__.'/min/yc.jar "'.$this->pathScript.$this->name.'_all.js"');
+            file_put_contents($this->pathScript.$this->name.'_all.js', $content);
         }
         
         $s = '<script id="javascript_base">var _URL=\''.$this->url.'\'';
@@ -370,9 +360,7 @@ class Html
             $s .= ','.$n.'='.(is_string($v) ? '\''.str_replace("'", '"', $v).'\'' : $v);
         }
         $s .= ';';
-        $this->val('script', $s.'</script><script src="'.strtolower($this->url.'js/'.$this->name).'_all.js"></script>');
-
-        //exit('ok');
+        $this->val('script', $s.$content.'</script>');
     }
 
 
@@ -416,15 +404,13 @@ class Html
         header('Expires: ' . gmdate('D, d M Y H:i:s', time() + 31536000) . ' GMT');
         header('Cache-Control: must_revalidate, public, max-age=31536000');
         header('X-Server: Qzumba/0.1.8.beta');//for safety ...
-        header('X-Powered-By: DevBrasil/0.1.1');//for safety ...
+        header('X-Powered-By: NEOS PHP FRAMEWORK/1.3.0');//for safety ...
 
         if ($this->cached &&
             file_exists($this->pathHtmlCache.$this->name.'_cache.html')) {
                 return $this->sendWithCach();
         } else {
-            //$this->content = $this->minify_html($this->content);
-            //\Lib\App::e($this);
-            exit(eval('?>'.$this->minify_html($this->content)));
+            exit(eval('?>'.$this->content));
         }
     }
 
@@ -691,7 +677,7 @@ class Html
             return '';
         }
         //$ret['-content-'] .= $v;
-        $ret['-content-'] .= '<?php echo Lib\Html::minify_html(Lib\Html::get("'.trim($ret['var']).'"))?>';
+        $ret['-content-'] .= '<?php echo Lib\Html::get("'.trim($ret['var']).'")?>';
 
         //List type
         if (is_array($v)) {
@@ -770,7 +756,6 @@ class Html
     */
     private function _select($ret)
     {
-        //App::e($ret);
         $var = $this->getVar($ret['data']);
         if (!$var) {
             return false;
@@ -778,7 +763,7 @@ class Html
 
         $o = '';
         foreach ($var['data'] as $k => $v) {
-            $o .= '<option value="'.$k.'"'.(isset($var['default']) && $var['default'] == $k ? ' selected':'').'>'.$v.'</option>';
+            $o .= '<option value="'.$k.'"'.($var['default'] == $k ? ' selected':'').'>'.$v.'</option>';
         }
         $ret['-content-'] = $o;
         $ret['tag'] = 'select';
@@ -835,106 +820,5 @@ class Html
               $ret['tag'],
               $ret['data']);
         return $ret;
-    }
-
-
-    /**
-     * Minify HTML
-     * @param  string $input content for html
-     * @return string Minified html string
-     */
-    static function minify_html($input)
-    {
-        if (trim($input) === "") {
-            return $input;
-        }
-        // Remove extra white-space(s) between HTML attribute(s)
-        $input = preg_replace_callback('#<([^\/\s<>!]+)(?:\s+([^<>]*?)\s*|\s*)(\/?)>#s', function ($matches) {
-            return '<' . $matches[1] . preg_replace('#([^\s=]+)(\=([\'"]?)(.*?)\3)?(\s+|$)#s', ' $1$2', $matches[2]) . $matches[3] . '>';
-        }, str_replace("\r", "", $input));
-        // Minify inline CSS declaration(s)
-        if (strpos($input, ' style=') !== false) {
-            $input = preg_replace_callback('#<([^<]+?)\s+style=([\'"])(.*?)\2(?=[\/\s>])#s', function ($matches) {
-                return '<' . $matches[1] . ' style=' . $matches[2] . static::minify_css($matches[3]) . $matches[2];
-            }, $input);
-        }
-        return preg_replace(
-            array(
-                // t = text
-                // o = tag open
-                // c = tag close
-                // Keep important white-space(s) after self-closing HTML tag(s)
-                '#<(img|input)(>| .*?>)#s',
-                // Remove a line break and two or more white-space(s) between tag(s)
-                '#(<!--.*?-->)|(>)(?:\n*|\s{2,})(<)|^\s*|\s*$#s',
-                '#(<!--.*?-->)|(?<!\>)\s+(<\/.*?>)|(<[^\/]*?>)\s+(?!\<)#s', // t+c || o+t
-                '#(<!--.*?-->)|(<[^\/]*?>)\s+(<[^\/]*?>)|(<\/.*?>)\s+(<\/.*?>)#s', // o+o || c+c
-                '#(<!--.*?-->)|(<\/.*?>)\s+(\s)(?!\<)|(?<!\>)\s+(\s)(<[^\/]*?\/?>)|(<[^\/]*?\/?>)\s+(\s)(?!\<)#s', // c+t || t+o || o+t -- separated by long white-space(s)
-                '#(<!--.*?-->)|(<[^\/]*?>)\s+(<\/.*?>)#s', // empty tag
-                '#<(img|input)(>| .*?>)<\/\1>#s', // reset previous fix
-                '#(&nbsp;)&nbsp;(?![<\s])#', // clean up ...
-                '#(?<=\>)(&nbsp;)(?=\<)#', // --ibid
-                // Remove HTML comment(s) except IE comment(s)
-                '#\s*<!--(?!\[if\s).*?-->\s*|(?<!\>)\n+(?=\<[^!])#s'
-            ),
-            array(
-                '<$1$2</$1>',
-                '$1$2$3',
-                '$1$2$3',
-                '$1$2$3$4$5',
-                '$1$2$3$4$5$6$7',
-                '$1$2$3',
-                '<$1$2',
-                '$1 ',
-                '$1',
-                ""
-            ),
-        $input);
-    }
-
-
-    static function minify_css($input)
-    {
-        if (trim($input) === "") {
-            return $input;
-        }
-        return preg_replace(
-        array(
-            // Remove comment(s)
-            '#("(?:[^"\\\]++|\\\.)*+"|\'(?:[^\'\\\\]++|\\\.)*+\')|\/\*(?!\!)(?>.*?\*\/)|^\s*|\s*$#s',
-            // Remove unused white-space(s)
-            '#("(?:[^"\\\]++|\\\.)*+"|\'(?:[^\'\\\\]++|\\\.)*+\'|\/\*(?>.*?\*\/))|\s*+;\s*+(})\s*+|\s*+([*$~^|]?+=|[{};,>~+]|\s*+-(?![0-9\.])|!important\b)\s*+|([[(:])\s++|\s++([])])|\s++(:)\s*+(?!(?>[^{}"\']++|"(?:[^"\\\]++|\\\.)*+"|\'(?:[^\'\\\\]++|\\\.)*+\')*+{)|^\s++|\s++\z|(\s)\s+#si',
-            // Replace `0(cm|em|ex|in|mm|pc|pt|px|vh|vw|%)` with `0`
-            '#(?<=[\s:])(0)(cm|em|ex|in|mm|pc|pt|px|vh|vw|%)#si',
-            // Replace `:0 0 0 0` with `:0`
-            '#:(0\s+0|0\s+0\s+0\s+0)(?=[;\}]|\!important)#i',
-            // Replace `background-position:0` with `background-position:0 0`
-            '#(background-position):0(?=[;\}])#si',
-            // Replace `0.6` with `.6`, but only when preceded by `:`, `,`, `-` or a white-space
-            '#(?<=[\s:,\-])0+\.(\d+)#s',
-            // Minify string value
-            '#(\/\*(?>.*?\*\/))|(?<!content\:)([\'"])([a-z_][a-z0-9\-_]*?)\2(?=[\s\{\}\];,])#si',
-            '#(\/\*(?>.*?\*\/))|(\burl\()([\'"])([^\s]+?)\3(\))#si',
-            // Minify HEX color code
-            '#(?<=[\s:,\-]\#)([a-f0-6]+)\1([a-f0-6]+)\2([a-f0-6]+)\3#i',
-            // Replace `(border|outline):none` with `(border|outline):0`
-            '#(?<=[\{;])(border|outline):none(?=[;\}\!])#',
-            // Remove empty selector(s)
-            '#(\/\*(?>.*?\*\/))|(^|[\{\}])(?:[^\s\{\}]+)\{\}#s'
-        ),
-        array(
-            '$1',
-            '$1$2$3$4$5$6$7',
-            '$1',
-            ':0',
-            '$1:0 0',
-            '.$1',
-            '$1$3',
-            '$1$2$4$5',
-            '$1$2$3',
-            '$1:0',
-            '$1$2'
-        ),
-        $input);
     }
 }
