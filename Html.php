@@ -1,6 +1,6 @@
 <?php
 /**
- * Lib\Html
+ * Devbr\Html
  * PHP version 7
  *
  * @category  Html
@@ -12,10 +12,10 @@
  * @link      http://paulorocha.tk/devbr
  */
 
-namespace Lib;
+namespace Devbr;
 
 /**
- * Lib\Html Class
+ * Devbr\Html Class
  *
  * @category Html
  * @package  Library
@@ -72,8 +72,8 @@ class Html
             foreach ($config as $k => $v) {
                 $this->{$k} = $v;
             }
-        } elseif (method_exists('Config\Lib\Html', 'getParams')) {
-            foreach ((new \Config\Lib\Html)->getParams() as $k => $v) {
+        } elseif (method_exists('Config\Devbr\Html\Html', 'getParams')) {
+            foreach ((new \Config\Devbr\Html\Html)->getParams() as $k => $v) {
                 $this->{$k} = $v;
             }
         }
@@ -677,7 +677,7 @@ class Html
             return '';
         }
         //$ret['-content-'] .= $v;
-        $ret['-content-'] .= '<?php echo Lib\Html::get("'.trim($ret['var']).'")?>';
+        $ret['-content-'] .= '<?php echo Devbr\Html::get("'.trim($ret['var']).'")?>';
 
         //List type
         if (is_array($v)) {

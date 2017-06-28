@@ -19,7 +19,7 @@ Composer require devbr/html
 ## Uso
 
 ```
-$html = new Lib\Html;
+$html = new Devbr\Html;
 $html->render('index')->send();
 ```
 

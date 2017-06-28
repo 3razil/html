@@ -1,6 +1,6 @@
 <?php
 /**
- * Config\Html
+ * Config\Devbr\Html
  * PHP version 7
  *
  * @category  Html
@@ -12,7 +12,7 @@
  * @link      http://paulorocha.tk/devbr
  */
 
-namespace Config\Lib;
+namespace Config\Devbr;
 
 /**
  * Config\Html Class
