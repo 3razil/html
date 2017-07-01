@@ -79,11 +79,11 @@ class Html
         }
 
         if ($this->pathHtml === null) {
-            $this->pathHtml = defined('_HTML') ? _HTML : dirname(__DIR__).'/';
+            $this->pathHtml = \Config\App::Html();
         }
 
         if ($this->pathWww === null) {
-            $this->pathWww  = defined('_WWW')  ? _WWW  : dirname(__DIR__).'/';
+            $this->pathWww  = \Config\App::Web();
         }
 
         if ($this->url === null) {
