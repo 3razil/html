@@ -9,7 +9,7 @@
  * @copyright 2016 Bill Rocha <http://google.com/+BillRocha>
  * @license   <https://opensource.org/licenses/MIT> MIT
  * @version   GIT: 0.0.2
- * @link      http://paulorocha.tk/devbr
+ * @link      http://dbrasil.tk/devbr
  */
 
 namespace Devbr;
@@ -21,7 +21,7 @@ namespace Devbr;
  * @package  Library
  * @author   Bill Rocha <prbr@ymail.com>
  * @license  <https://opensource.org/licenses/MIT> MIT
- * @link     http://paulorocha.tk/devbr
+ * @link     http://dbrasil.tk/devbr
  */
 class Html
 {
@@ -72,8 +72,8 @@ class Html
             foreach ($config as $k => $v) {
                 $this->{$k} = $v;
             }
-        } elseif (method_exists('Config\Devbr\Html\Html', 'getParams')) {
-            foreach ((new \Config\Devbr\Html\Html)->getParams() as $k => $v) {
+        } elseif (method_exists('Config\Html', 'getParams')) {
+            foreach ((new \Config\Html)->getParams() as $k => $v) {
                 $this->{$k} = $v;
             }
         }
