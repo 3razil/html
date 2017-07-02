@@ -47,9 +47,9 @@ class Html
      */
     function __construct()
     {
-        defined('_HTML') && $this->pathHtml = _APP.'Html/';
-        defined('_WWW')  && $this->pathWww =  _WWW;
-
+        $this->pathWww = \Config\App::Web();
+        $this->pathHtml = \Config\App::Html();
+        
         $this->pathHtmlCache = $this->pathHtml.'cache/';
         $this->pathStyle = $this->pathWww.'css/';
         $this->pathScript = $this->pathWww.'js/';
