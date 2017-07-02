@@ -12,7 +12,7 @@
  * @link      http://paulorocha.tk/devbr
  */
 
-namespace Config\Devbr;
+namespace Config;
 
 /**
  * Config\Html Class
@@ -47,8 +47,8 @@ class Html
      */
     function __construct()
     {
-        $this->pathWww = \Config\App::Web();
-        $this->pathHtml = \Config\App::Html();
+        $this->pathWww  = App::Web();
+        $this->pathHtml = App::Html();
         
         $this->pathHtmlCache = $this->pathHtml.'cache/';
         $this->pathStyle = $this->pathWww.'css/';
