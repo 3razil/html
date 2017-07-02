@@ -1,5 +1,11 @@
 # Html engine (PHP)
 
+[![Latest Stable Version](https://poser.pugx.org/devbr/website/v/stable)](https://packagist.org/packages/devbr/html)
+[![Latest Unstable Version](https://poser.pugx.org/devbr/website/v/unstable)](https://packagist.org/packages/devbr/html)
+[![License](https://poser.pugx.org/devbr/website/license)](https://packagist.org/packages/devbr/html)
+[![Total Downloads](https://poser.pugx.org/devbr/website/downloads)](https://packagist.org/packages/devbr/html)
+[![Monthly Downloads](https://poser.pugx.org/devbr/website/d/monthly)](https://packagist.org/packages/devbr/html)
+
 Gerador e gerenciador de HTML para projetos web em PHP.
 
 * &copy;NeoTags para adicionar funcionalidades extras ao HTML;
