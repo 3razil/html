@@ -47,8 +47,8 @@ class Html
      */
     function __construct()
     {
-        $this->pathWww  = App::Web();
-        $this->pathHtml = App::Html();
+        $this->pathWww  = \App::Web();
+        $this->pathHtml = \App::Html();
         
         $this->pathHtmlCache = $this->pathHtml.'cache/';
         $this->pathStyle = $this->pathWww.'css/';
