@@ -10,7 +10,8 @@
         "email": "prbr@ymail.com"
     }],
     "config": {
-        "preferred-install": "dist"
+        "preferred-install": "dist",
+        "vendor-dir": ".php/Plugin"
     },
     "require": {
         "php": ">=5.6"
