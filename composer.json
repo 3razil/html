@@ -3,7 +3,7 @@
     "description": "Html Template Engine",
     "keywords": ["html", "template","neostag"],
     "license": "MIT",
-    "type": "neos-library",
+    "type": "plugin",
     "homepage": "http://dbrasil.tk/devbr/",
     "authors": [{
         "name": "Bill Rocha",
