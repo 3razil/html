@@ -3,7 +3,7 @@
     "description": "Html Template Engine",
     "keywords": ["html", "template","neostag"],
     "license": "MIT",
-    "type": "devbr-template",
+    "type": "library",
     "homepage": "http://dbrasil.tk/devbr/",
     "authors": [{
         "name": "Bill Rocha",
@@ -13,8 +13,7 @@
         "preferred-install": "dist"
     },
     "require": {
-        "php": ">=5.6",
-        "devbr/install-plugin":"*"
+        "php": ">=5.6"
     },
     "autoload": {
         "psr-4": {
