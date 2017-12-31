@@ -72,18 +72,18 @@ class Html
             foreach ($config as $k => $v) {
                 $this->{$k} = $v;
             }
-        } elseif (method_exists('Config\Html', 'getParams')) {
-            foreach ((new \Config\Html)->getParams() as $k => $v) {
+        } elseif (method_exists('\Config\Devbr\Html', 'getParams')) {
+            foreach ((new \Config\Devbr\Html)->getParams() as $k => $v) {
                 $this->{$k} = $v;
             }
         }
 
         if ($this->pathHtml === null) {
-            $this->pathHtml = \App::Html();
+            $this->pathHtml = dirname(dirname(dirname(__DIR__))).'/Html';
         }
 
         if ($this->pathWww === null) {
-            $this->pathWww  = \App::Web();
+            $this->pathWww  = dirname(dirname(dirname(dirname(__DIR__))));
         }
 
         if ($this->url === null) {
