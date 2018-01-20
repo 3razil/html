@@ -276,7 +276,7 @@ class Html
         }
 
         $this->render()
-         ->send();
+             ->send();
     }
 
 
@@ -294,7 +294,7 @@ class Html
 
 
         if ($this->cached &&
-        file_exists($this->pathHtmlCache.$this->name.'_cache.html')) {
+            file_exists($this->pathHtmlCache.$this->name.'_cache.html')) {
             return $this;
         }
 
@@ -323,6 +323,7 @@ class Html
 
         //Insert cache data
         if ($this->cached) {
+            self::checkAndOrCreateDir($this->pathHtmlCache, true);
             file_put_contents($this->pathHtmlCache.$this->name.'_cache.html', $this->getContent());
         }
 
@@ -855,5 +856,32 @@ class Html
               $ret['tag'],
               $ret['data']);
         return $ret;
+    }    
+
+    // Checa um diretório e cria se não existe - retorna false se não conseguir ou não existir
+    /**
+     * Check or create a directory
+     * @param  string  $dir    path of the directory
+     * @param  boolean $create False/true for create
+     * @param  string  $perm   indiucates a permission - default 0777
+     *
+     * @return bool          status of directory (exists/created = false or true)
+     */
+    static function checkAndOrCreateDir($dir, $create = false, $perm = 0777)
+    {
+        if (is_dir($dir) && is_writable($dir)) {
+            return true;
+        } elseif ($create === false) {
+            return false;
+        }
+
+        @mkdir($dir, $perm, true);
+        @chmod($dir, $perm);
+
+        if (!is_writable($dir)) {
+            return false;
+        }
+        
+        return true;
     }
 }
