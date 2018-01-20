@@ -9,7 +9,7 @@
  * @copyright 2016 Bill Rocha <http://google.com/+BillRocha>
  * @license   <https://opensource.org/licenses/MIT> MIT
  * @version   GIT: 0.0.2
- * @link      http://dbrasil.tk/devbr
+ * @link      https://github.com/devbr/
  */
 
 namespace Config\Devbr;
@@ -21,7 +21,7 @@ namespace Config\Devbr;
  * @package  Config
  * @author   Bill Rocha <prbr@ymail.com>
  * @license  <https://opensource.org/licenses/MIT> MIT
- * @link     http://dbrasil.tk/devbr
+ * @link     https://github.com/devbr
  */
 class Html
 {
@@ -50,12 +50,12 @@ class Html
         $this->pathWww  = defined('_PHPPATH') ? _PHPPATH : dirname(dirname(dirname(__DIR__)));
         $this->pathHtml = defined('_HTMLPATH') ? _HTMLPATH: __DIR__.'/Html';
         
-        $this->pathHtmlCache = $this->pathHtml.'cache/';
-        $this->pathStyle = $this->pathWww.'css/';
-        $this->pathScript = $this->pathWww.'js/';
+        $this->pathHtmlCache = $this->pathHtml.'/cache/';
+        $this->pathStyle = $this->pathWww.'/css/';
+        $this->pathScript = $this->pathWww.'/js/';
 
-        $this->header = $this->pathHtml.'header.html';
-        $this->footer = $this->pathHtml.'footer.html';
+        $this->header = $this->pathHtml.'/header.html';
+        $this->footer = $this->pathHtml.'/footer.html';
     }
 
     /*
