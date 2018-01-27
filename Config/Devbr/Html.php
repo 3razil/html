@@ -47,8 +47,8 @@ class Html
      */
     function __construct()
     {
-        $this->pathWww  = defined('_PHPPATH') ? _PHPPATH : dirname(dirname(dirname(__DIR__)));
-        $this->pathHtml = defined('_HTMLPATH') ? _HTMLPATH: __DIR__.'/Html';
+        $this->pathWww  = defined('_WWWPATH') ? _WWWPATH : dirname(dirname(dirname(__DIR__)));
+        $this->pathHtml = defined('_HTMLPATH') ? _HTMLPATH: dirname(dirname(__DIR__).'/Html');
         
         $this->pathHtmlCache = $this->pathHtml.'/cache/';
         $this->pathStyle = $this->pathWww.'/css/';
