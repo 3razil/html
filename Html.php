@@ -11,8 +11,8 @@
  * @version   GIT: 0.0.2
  * @link      http://dbrasil.tk/devbr
  */
+namespace Lib;
 
-namespace Devbr;
 
 /**
  * Devbr\Html Class
@@ -72,8 +72,8 @@ class Html
             foreach ($config as $k => $v) {
                 $this->{$k} = $v;
             }
-        } elseif (method_exists('\Config\Devbr\Html', 'getParams')) {
-            foreach ((new \Config\Devbr\Html)->getParams() as $k => $v) {
+        } elseif (method_exists('\Config\Html', 'getParams')) {
+            foreach ((new \Config\Html)->getParams() as $k => $v) {
                 $this->{$k} = $v;
             }
         }
@@ -409,7 +409,8 @@ class Html
     {
         $s = '';
         foreach ($this->styles as $id => $f) {
-            $s .= '<link id="stylesheet_'.$id.'" rel="stylesheet" href="'.$this->url.'css/'.$f.'.css">'."\n\t";
+            $tmp = strpos($f, 'http') !== false ? $f : $this->url.'css/'.$f.'.css';
+            $s .= '<link id="stylesheet_'.$id.'" rel="stylesheet" href="'.$tmp.'">'."\n\t";
         }
         $this->val('style', $s);
 
@@ -421,7 +422,8 @@ class Html
         $s .= ';</script>';
         
         foreach ($this->scripts as $id => $f) {
-            $s .= "\n\t".'<script id="javascript_'.$id.'" src="'.$this->url.'js/'.$f.'.js"></script>';
+            $tmp = strpos($f, 'http') !== false ? $f : $this->url.'js/'.$f.'.js';
+            $s .= "\n\t".'<script id="javascript_'.$id.'" src="'.$tmp.'"></script>';
         }
         $this->val('script', $s); //e($this);
     }
