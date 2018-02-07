@@ -248,7 +248,7 @@ class Html
     }
 
 
-    public function sendPage($page, $data = null, $jsvar = null, $styles = null, $scripts = null, $htmlPatch = null, $header = null, $footer = null)
+    public function sendPage($page = 'body', $data = null, $jsvar = null, $styles = null, $scripts = null, $htmlPatch = null, $header = null, $footer = null)
     {
         $this->body($page)
          ->setName($page.md5(time()))
